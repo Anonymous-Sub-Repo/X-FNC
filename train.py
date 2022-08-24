@@ -26,11 +26,6 @@ from sklearn.metrics import f1_score
 # import contrast_util
 import json
 import os
-# import GCL.losses as L
-# import GCL.augmentors as A
-
-# from GCL.eval import get_split, LREvaluator
-# from GCL.models import DualBranchContrast
 from base_model_SSL import GCN_dense
 from base_model_SSL import Linear
 from base_model_SSL import GCN_emb
@@ -699,35 +694,7 @@ for dataset in ['Amazon_eletronics']:
                 attention = torch.exp(-cal_euclidean(pos_graph_feat) * 10)
 
 
-                # print(attention.sum(-1))
-
-                #attention=torch.exp((cos_similarity(pos_graph_feat,pos_graph_feat)*2-2)*100)
-
-                # att_sum=attention.sum(-1)
-                # print(att_sum)
-
-                # for i in range(att_sum.shape[0]):
-                #    if att_sum[i]>=2:
-                #        print(pos_graph_neighbors)
-                #        print(attention[i])
-                #        index=torch.nonzero((attention[i]-0.9).relu())
-                #        print(index)
-                #        print(pos_graph_feat[index])
-                #        print(pos_graph_neighbors[index[0]])
-                #        print(pos_graph_neighbors[index[1]])
-                #        print(1/0)
-
                 W = pos_graph_adj + attention
-                # W = torch.rand(pos_graph_adj.shape).cuda()
-
-                # W *= (W > 0.5)
-                # W = torch.relu(W - 0.5)
-
-                # W = W + W.t()
-                # for i in range(W.shape[0]):
-                # W[i, i] = 1
-
-                # print(W)
 
                 D = torch.diag(W.sum(-1))
                 L = D - W
@@ -897,8 +864,6 @@ for dataset in ['Amazon_eletronics']:
                 return (torch.argmax(logits, -1) == query_labels).float().mean().item(), sum(pseudo_acc) / (len(pseudo_acc) + 1e-9)
 
 
-            # Train model
-            # Train model  逐个epoch进行train
             t_total = time.time()
             best_acc = 0
             pse=[]
